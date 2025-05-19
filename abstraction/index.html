@@ -1,0 +1,134 @@
+</style>
+</head>
+<body>
+  <h1>Bobbin Lace Generator</h1>
+  <label>Number of Initial Pins: <input type="number" id="pins" min="2" step="1" value="2"></label>
+  <label>Number of Rows: <input type="number" id="rows" min="2" value="2"></label>
+  <button onclick="drawLace()">Draw Lace</button>
+  <canvas id="laceCanvas" width="600" height="800"></canvas>
+  <script>
+  //global variables
+  const canvas = document.getElementById('laceCanvas');
+  const ctx = canvas.getContext('2d');
+  const startX = 50;
+  const startY = 50;
+  const spacingX = 60;
+  const spacingY = 100;
+
+  //resulting 2D array
+  const grid = []
+
+  //Ground-to-Stich Map
+  const groundMap = {
+  torchon: [-1, 2, [-1, -3], -1, 2, [-1, -3]]
+};
+
+  //initial coordinates: remove
+  const lines = [
+  [100, 50, 100, 300],  // Line 1
+  [160, 50, 160, 300],  // Line 2
+  [220, 50, 220, 300],  // Line 3
+  [280, 50, 280, 300]   // Line 4
+  ];
+
+  //Thread Object
+  class Thread {
+  constructor(color) {
+    this.color = color;
+   }
+  }
+  const threads = []
+
+  /**
+   * Draws a grid of pins as the inital set up
+   * @param {}
+   * @returns {}
+   * */
+  function drawGrid(pinCount, rowCount, spacingX, spacingY) {
+      ctx.strokeStyle = '#ddd';
+      ctx.fillStyle = '#000';
+
+      for (let j = 0; j <= rowCount; j++) {
+          let shiftX = (j % 2) * (spacingX / 2);
+          let count = j % 2 === 1 ? pinCount - 1 : pinCount;
+
+          for (let i = 0; i < count; i++) {
+              let x = startX + i * spacingX + shiftX;
+              let y = startY + j * spacingY;
+
+              ctx.beginPath();
+              ctx.arc(x, y, 4, 0, Math.PI * 2);
+              ctx.fill();
+          }
+      }
+  }
+
+  /**
+   * Get random color
+  */
+  function getRandomNamedColor() {
+    const colors = ["red", "blue", "green", "orange", "purple", "pink", "yellow", "brown", "black", "gray"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  /**
+   * Draws the initial set of threads per pin with random colors (can change)
+  */
+  function drawInitialThreads(pinCount) {
+    for (let i = 0; i < pinCount; i++) {
+      //create 4 thread objects per pin and color them with random colors
+      for (let i = 0; i < 4; i++) {
+        let color = getRandomNamedColor();
+        let t = new Thread(color);
+        threads.push(t);
+      }
+    }
+    console.log(threads);  //see how the thread array is populated in inspect
+
+    //Iterate through 2d array + thread array keeping in mind the past coordinates
+    //determine each 4 thread group order and get inner array using orderThreads
+    //populate 2D array
+  }
+
+  /**
+   * Determines the order of each 4 thread subsection based on the stitch pattern (braid group)
+   * and stores it as a [] of tuples (ThreadObject_i, Coordinate of ThreadObject_i)
+  */
+  function orderThreads(t1, t2, t3, t4, coord_to_update, x_spacing, y_spacing) {
+    braid = groundMap['torchon'] //we can make this user asked ground
+
+    //determine order of threads + coordinates per thread (given a standard x and y spacing)
+  }
+
+  /**
+   * Draws the generated lace, using 2D array with coordinates, we use bezier path or draw
+   * braid (anna's) to connect the threads.
+   *
+  */
+  function drawLace() {
+    const pinCount = parseInt(document.getElementById('pins').value);
+    const rowCount = parseInt(document.getElementById('rows').value);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    //draws the pin grid
+    drawGrid(pinCount, rowCount, spacingX, spacingY);
+
+    drawInitialThreads(pinCount);
+  }
+
+  </script>
+</body>
+</html>
+
+
+<!-- //Thread Object
+
+//Map of grounds
+
+
+//generateCoordinates(#number of pins, ground)
+//iterate through number of threads, per 4 threads we drawBraid (use anna's)
+// and store the new coordinates of all threads after their
+
+//drawLace(Thread[])
+//take each coordinate and.. -->
