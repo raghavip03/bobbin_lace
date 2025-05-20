@@ -152,33 +152,33 @@ function drawBraid(pin, braid, color = "red") {
 
 function generateLace() {
   const pinCount = parseInt(document.getElementById('pins').value);
-    const rowCount = parseInt(document.getElementById('rows').value);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawGrid(pinCount, rowCount, spacingX, spacingY);
-    for (let j = 0; j <= rowCount; j++) {
-      let shiftX = (j % 2) * (spacingX / 2);
-      let count = j % 2 == 1 ? pinCount + 1 : pinCount;
-      drawEdges(pinCount, rowCount, j, count);
-        for (let i = 0; i < count - 1; i++) {
-            let x = startX + i * spacingX - shiftX;
-            let y = startY + j * spacingY;
-            braid = [];
-            for (let k = 0; k < 5; k++) {
-              const r = Math.floor(Math.random() * 4);
-              if (r == 0) {
-                braid.push(-1);
-              } else if (r == 1) {
-                braid.push(2);
-              } else if (r == 2) {
-                braid.push(-3);
-              } else {
-                braid.push([-1, -3]);
-              }
-            }
-            drawBraid([x, y], braid);
-          drawConnections(pinCount, rowCount, i, j, count, 0.15, braid.length, x, y);
+  const rowCount = parseInt(document.getElementById('rows').value);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawGrid(pinCount, rowCount, spacingX, spacingY);
+  for (let j = 0; j <= rowCount; j++) {
+    let shiftX = (j % 2) * (spacingX / 2);
+    let count = j % 2 == 1 ? pinCount + 1 : pinCount;
+    drawEdges(pinCount, rowCount, j, count);
+    for (let i = 0; i < count - 1; i++) {
+      let x = startX + i * spacingX - shiftX;
+      let y = startY + j * spacingY;
+      braid = [];
+      for (let k = 0; k < 5; k++) {
+        const r = Math.floor(Math.random() * 4);
+        if (r == 0) {
+          braid.push(-1);
+        } else if (r == 1) {
+          braid.push(2);
+        } else if (r == 2) {
+          braid.push(-3);
+        } else {
+          braid.push([-1, -3]);
         }
+      }
+      drawBraid([x, y], braid);
+      drawConnections(pinCount, rowCount, i, j, count, 0.15, braid.length, x, y);
     }
+  }
 }
 
 function drawEdges(pinCount, rowCount, j, count) {
@@ -309,6 +309,6 @@ function drawConnections(pinCount, rowCount, i, j, count, op, braidLen, x, y) {
     ctx.stroke();
   }
 }
-  </script>
+</script>
 </body>
 </html>
