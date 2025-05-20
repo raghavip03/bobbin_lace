@@ -21,26 +21,25 @@ const canvas = document.getElementById('laceCanvas');
 const ctx = canvas.getContext('2d');
 const startX = 50;
 const startY = 50;
-const spacingX = 120;
-const spacingY = 40;
+const spacingX = 60;
+const spacingY = 100;
 
 function drawGrid(pinCount, rowCount, spacingX, spacingY) {
-    ctx.strokeStyle = '#ddd';
-    ctx.fillStyle = '#000';
+  ctx.strokeStyle = '#ddd';
+  ctx.fillStyle = '#000';
 
-    for (let j = 0; j <= rowCount; j++) {
-        let shiftX = (j % 2) * (spacingX / 2);
-        let count = j % 2 === 1 ? pinCount - 1 : pinCount;
+  for (let j = 0; j <= rowCount; j++) {
+    let shiftX = (j % 2) * (spacingX / 2);
+    let count = j % 2 === 1 ? pinCount - 1 : pinCount;
 
-        for (let i = 0; i < count; i++) {
-            let x = startX + i * spacingX + shiftX;
-            let y = startY + j * spacingY;
-
-            ctx.beginPath();
-            ctx.arc(x, y, 4, 0, Math.PI * 2);
-            ctx.fill();
-        }
+    for (let i = 0; i < count; i++) {
+      let x = startX + i * spacingX + shiftX;
+      let y = startY + j * spacingY;
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fill();
     }
+  }
 }
 
 function bezierPath(path, color = "red") {
@@ -71,280 +70,244 @@ function bezierPath(path, color = "red") {
 // braid = [-1, 2, [-1,-3], -1, 2, [-1,-3] ]
 // pin is an array with 2 coordinates of a pin
 function drawBraid(pin, braid, color = "red") {
-    dx = pin[0] + spacingX / 4;
-    dy = pin[1] + spacingY / 6;
-    //orx = 0;
-    //ory = -1;
-    //nx = 1;
-    ory = spacingY / braid.length - (spacingY / braid.length) / 3;
-    nx = spacingX / 6;
-    op = 0.15;
-    //ny = 0;
-    for (let i = 0; i < braid.length; i++) {
-        let m = braid[i];
-        if (!Array.isArray(m)) {
-            m = [m];
-        }
-        for (let j = 0; j < 4; j++) {
-            if (m.includes(j+1)) {
-                bezierPath([
-                    [
-                        [dx+j*nx, dy+i*ory],
-                        [dx+j*nx, dy+ory*(i+0.25)],
-                        [dx+nx*(j+0.5), dy+ory*(i+0.5)]
-                    ], [
-                        [dx+nx*(j+1), dy+ory*(i+0.75)],
-                        [dx+nx*(j+1), dy+ory*(i+1)]
-                    ]
-                ], color);
-            } else if (m.includes(j)) {
-                bezierPath([
-                    [
-                        [dx+nx*j, dy+ory*i],
-                        [dx+nx*j, dy+ory*(i+0.25)],
-                        [dx+nx*(j-0.5+4*op), dy+ory*(i+0.5-2*op)],
-                        [dx+nx*(j-0.5+2*op), dy+ory*(i+0.5-op)]
-                    ]
-                ], color);
-                bezierPath([
-                    [
-                        [dx+nx*(j-0.5-2*op), dy+ory*(i+0.5+op)],
-                        [dx+nx*(j-0.5-4*op), dy+ory*(i+0.5+2*op)],
-                        [dx+nx*(j-1), dy+ory*(i+0.75)],
-                        [dx+nx*(j-1), dy+ory*(i+1)]
-                    ]
-                ], color);
-            } else if (m.includes(-(j+1))) {
-                bezierPath([
-                    [
-                        [dx+nx*j, dy+ory*i],
-                        [dx+nx*j, dy+ory*(i+0.25)],
-                        [dx+nx*(j+0.5-4*op), dy+ory*(i+0.5-2*op)],
-                        [dx+nx*(j+0.5-2*op), dy+ory*(i+0.5-op)]
-                    ]
-                ], color);
-                bezierPath([
-                    [
-                        [dx+nx*(j+0.5+2*op), dy+ory*(i+0.5+op)],
-                        [dx+nx*(j+0.5+4*op), dy+ory*(i+0.5+2*op)],
-                        [dx+nx*(j+1), dy+ory*(i+0.75)],
-                        [dx+nx*(j+1), dy+ory*(i+1)]
-                    ]
-                ], color);
-            } else if (m.includes(-j)) {
-                bezierPath([
-                    [
-                        [dx+nx*j, dy+ory*i],
-                        [dx+nx*j, dy+ory*(i+0.25)],
-                        [dx+nx*(j-0.5), dy+ory*(i+0.5)]
-                    ], [
-                        [dx+nx*(j-1), dy+ory*(i+0.75)],
-                        [dx+nx*(j-1), dy+ory*(i+1)]
-                    ]
-                ], color);
-            }
-            else {
-                bezierPath([
-                    [
-                        [dx+nx*j, dy+ory*i],
-                        [dx+nx*j, dy+ory*(i+1)]
-                    ]
-                ], color);  // Just a line
-            }
-        }
+  dx = pin[0] + spacingX / 4;
+  dy = pin[1] + spacingY / 6;
+  ory = spacingY / braid.length - (spacingY / braid.length) / 3;
+  nx = spacingX / 6;
+  op = 0.15;
+  for (let i = 0; i < braid.length; i++) {
+    let m = braid[i];
+    if (!Array.isArray(m)) {
+      m = [m];
     }
+    for (let j = 0; j < 4; j++) {
+      if (m.includes(j+1)) {
+        bezierPath([
+          [
+            [dx+j*nx, dy+i*ory],
+            [dx+j*nx, dy+ory*(i+0.25)],
+            [dx+nx*(j+0.5), dy+ory*(i+0.5)]
+          ], [
+            [dx+nx*(j+1), dy+ory*(i+0.75)],
+            [dx+nx*(j+1), dy+ory*(i+1)]
+          ]
+        ], color);
+      } else if (m.includes(j)) {
+        bezierPath([
+          [
+            [dx+nx*j, dy+ory*i],
+            [dx+nx*j, dy+ory*(i+0.25)],
+            [dx+nx*(j-0.5+4*op), dy+ory*(i+0.5-2*op)],
+            [dx+nx*(j-0.5+2*op), dy+ory*(i+0.5-op)]
+          ]
+        ], color);
+        bezierPath([
+          [
+            [dx+nx*(j-0.5-2*op), dy+ory*(i+0.5+op)],
+            [dx+nx*(j-0.5-4*op), dy+ory*(i+0.5+2*op)],
+            [dx+nx*(j-1), dy+ory*(i+0.75)],
+            [dx+nx*(j-1), dy+ory*(i+1)]
+          ]
+        ], color);
+      } else if (m.includes(-(j+1))) {
+        bezierPath([
+          [
+            [dx+nx*j, dy+ory*i],
+            [dx+nx*j, dy+ory*(i+0.25)],
+            [dx+nx*(j+0.5-4*op), dy+ory*(i+0.5-2*op)],
+            [dx+nx*(j+0.5-2*op), dy+ory*(i+0.5-op)]
+          ]
+        ], color);
+        bezierPath([
+          [
+            [dx+nx*(j+0.5+2*op), dy+ory*(i+0.5+op)],
+            [dx+nx*(j+0.5+4*op), dy+ory*(i+0.5+2*op)],
+            [dx+nx*(j+1), dy+ory*(i+0.75)],
+            [dx+nx*(j+1), dy+ory*(i+1)]
+          ]
+        ], color);
+      } else if (m.includes(-j)) {
+        bezierPath([
+          [
+            [dx+nx*j, dy+ory*i],
+            [dx+nx*j, dy+ory*(i+0.25)],
+            [dx+nx*(j-0.5), dy+ory*(i+0.5)]
+          ], [
+            [dx+nx*(j-1), dy+ory*(i+0.75)],
+            [dx+nx*(j-1), dy+ory*(i+1)]
+          ]
+        ], color);
+      }
+      else {
+        bezierPath([
+          [
+            [dx+nx*j, dy+ory*i],
+            [dx+nx*j, dy+ory*(i+1)]
+          ]
+        ], color);  // Just a line
+      }
+    }
+  }
 }
-
-function drawEdges(startx1, startx2, startx3, startx4) {
-
-}
-
 
 function generateLace() {
   const pinCount = parseInt(document.getElementById('pins').value);
     const rowCount = parseInt(document.getElementById('rows').value);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid(pinCount, rowCount, spacingX, spacingY);
-
     for (let j = 0; j <= rowCount; j++) {
-        let dx = spacingX * 3 / 4;
-        let dy = spacingY / 6;
-        let shiftX = (j % 2) * (spacingX / 2);
-        let count = j % 2 == 1 ? pinCount + 1 : pinCount;
-        if (j % 2 == 0) {
-          let startx1 = startX - (spacingX / 4);
-          let startx2 = startX - (spacingX / 4) + (spacingX / 6);
-          let startx3 = startX + (count - 1) * spacingX + (spacingX / 12);
-          let startx4 = startX + (count - 1) * spacingX + (spacingX / 4);
-          let starty1 = startY + j * spacingY - dy;
-          let endy1 = startY + (j+1) * spacingY + dy;
-          if (j == 0) {
-            starty1 = starty1 + dy + dy;
-          }
-          if (j == rowCount) {
-            endy1 = endy1 - dy - dy;
-          }
-          ctx.beginPath();
-          ctx.moveTo(startx1, starty1);
-          ctx.lineTo(startx1, endy1);
-
-          // Draw the Path
-          ctx.strokeStyle = 'red';
-          ctx.stroke();
-
-          ctx.beginPath();
-          ctx.moveTo(startx2, starty1);
-          ctx.lineTo(startx2, endy1);
-
-          // Draw the Path
-          ctx.strokeStyle = 'red';
-          ctx.stroke();
-
-          ctx.beginPath();
-          ctx.moveTo(startx3, starty1);
-          ctx.lineTo(startx3, endy1);
-
-          // Draw the Path
-          ctx.strokeStyle = 'red';
-          ctx.stroke();
-
-          ctx.beginPath();
-          ctx.moveTo(startx4, starty1);
-          ctx.lineTo(startx4, endy1);
-
-          // Draw the Path
-          ctx.strokeStyle = 'red';
-          ctx.stroke();
-
-        }
+      let shiftX = (j % 2) * (spacingX / 2);
+      let count = j % 2 == 1 ? pinCount + 1 : pinCount;
+      drawEdges(pinCount, rowCount, j, count);
         for (let i = 0; i < count - 1; i++) {
             let x = startX + i * spacingX - shiftX;
             let y = startY + j * spacingY;
             braid = [];
             for (let k = 0; k < 5; k++) {
-                const r = Math.floor(Math.random() * 4);
-                if (r == 0) {
+              const r = Math.floor(Math.random() * 4);
+              if (r == 0) {
                 braid.push(-1);
-                } else if (r == 1) {
+              } else if (r == 1) {
                 braid.push(2);
-                } else if (r == 2) {
+              } else if (r == 2) {
                 braid.push(-3);
-                } else {
+              } else {
                 braid.push([-1, -3]);
-                }
+              }
             }
             drawBraid([x, y], braid);
-            let ory = spacingY / braid.length - spacingY/6;
-            let nx = spacingX / 4;
-            let op = 0.15;
-            if (!(j%2 == 1 && (i == 0 || i == count - 2) ) && j != rowCount) {
-              let startXPos = x + nx
-              let startYPos = y + spacingY - spacingY/6;
-              let endXPos = x + nx/3;
-              let endYPos = y + spacingY + spacingY/6;
-
-              ctx.beginPath();
-              ctx.moveTo(startXPos, startYPos);
-              ctx.lineTo(endXPos, endYPos);
-
-              // Draw the Path
-              ctx.strokeStyle = 'green';
-              ctx.stroke();
-
-              let startXPos2 = x + nx + (nx * 2 / 3);
-              let startYPos2 = y + spacingY - spacingY/6;
-              let endXPos2 = x + nx;
-              let endYPos2 = y + spacingY + spacingY/6;
-
-              ctx.beginPath();
-              ctx.moveTo(startXPos2, startYPos2);
-              ctx.lineTo(endXPos2, endYPos2);
-
-              // Draw the Path
-              ctx.strokeStyle = 'orange';
-              ctx.stroke();
-
-              let startXPos3 = x + nx + (nx * 4 / 3);
-              let startYPos3 = y + spacingY - spacingY/6;
-              let endXPos3 = x + nx + (nx * 6 / 3);
-              let endYPos3 = y + spacingY + spacingY/6;
-
-              ctx.beginPath();
-              ctx.moveTo(startXPos3, startYPos3);
-              ctx.lineTo(endXPos3, endYPos3);
-
-              // Draw the Path
-              ctx.strokeStyle = 'yellow';
-              ctx.stroke();
-
-              let startXPos4 = x + nx + (nx * 6 / 3)
-              let startYPos4 = y + spacingY - spacingY/6;
-              let endXPos4 = x + nx + (nx * 8 / 3);
-              let endYPos4 = y + spacingY + spacingY/6;
-
-              ctx.beginPath();
-              ctx.moveTo(startXPos4, startYPos4);
-              ctx.lineTo(endXPos4, endYPos4);
-
-              // Draw the Path
-              ctx.strokeStyle = 'blue';
-              ctx.stroke();
-
-            } else if (i == count - 2 && j != rowCount) {
-              let startXPos = x + nx
-              let startYPos = y + spacingY - spacingY/6;
-              let endXPos = x + nx - (nx * 2 / 3);
-              let endYPos = y + spacingY + spacingY/6;
-
-              ctx.beginPath();
-              ctx.moveTo(startXPos, startYPos);
-              ctx.lineTo(endXPos, endYPos);
-
-              // Draw the Path
-              ctx.strokeStyle = 'purple';
-              ctx.stroke();
-
-              let startXPos2 = x + nx + (nx * 2 / 3)
-              let startYPos2 = y + spacingY - spacingY/6;
-              let endXPos2 = x + nx;
-              let endYPos2 = y + spacingY + spacingY/6;
-
-              ctx.beginPath();
-              ctx.moveTo(startXPos2, startYPos2);
-              ctx.lineTo(endXPos2, endYPos2);
-
-              // Draw the Path
-              ctx.strokeStyle = 'brown';
-              ctx.stroke();
-            } else if (i == 0 && j != rowCount) {
-              let startXPos3 = x + nx + (nx * 4 / 3)
-              let startYPos3 = y + spacingY - spacingY/6;
-              let endXPos3 = x + nx + (nx * 6 / 3);
-              let endYPos3 = y + spacingY + spacingY/6;
-
-              ctx.beginPath();
-              ctx.moveTo(startXPos3, startYPos3);
-              ctx.lineTo(endXPos3, endYPos3);
-
-              // Draw the Path
-              ctx.strokeStyle = 'black';
-              ctx.stroke();
-
-              let startXPos4 = x + nx + (nx * 6 / 3);
-              let startYPos4 = y + spacingY - spacingY/6;
-              let endXPos4 = x + nx + (nx * 8 / 3);
-              let endYPos4 = y + spacingY + spacingY/6;
-
-              ctx.beginPath();
-              ctx.moveTo(startXPos4, startYPos4);
-              ctx.lineTo(endXPos4, endYPos4);
-
-              // Draw the Path
-              ctx.strokeStyle = 'pink';
-              ctx.stroke();
-            }
+          drawConnections(pinCount, rowCount, i, j, count, 0.15, braid.length, x, y);
         }
     }
+}
+
+function drawEdges(pinCount, rowCount, j, count) {
+  let dx = spacingX * 3 / 4;
+  let dy = spacingY / 6;
+  if (j % 2 == 0) {
+    let startx1 = startX - (spacingX / 4);
+    let startx2 = startX - (spacingX / 4) + (spacingX / 6);
+    let startx3 = startX + (count - 1) * spacingX + (spacingX / 12);
+    let startx4 = startX + (count - 1) * spacingX + (spacingX / 4);
+    let starty1 = startY + j * spacingY - dy;
+    let endy1 = startY + (j+1) * spacingY + dy;
+    if (j == 0) {
+      starty1 = starty1 + dy + dy;
+    }
+    if (j == rowCount) {
+      endy1 = endy1 - dy - dy;
+    }
+    ctx.beginPath();
+    ctx.moveTo(startx1, starty1);
+    ctx.lineTo(startx1, endy1);
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(startx2, starty1);
+    ctx.lineTo(startx2, endy1);
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(startx3, starty1);
+    ctx.lineTo(startx3, endy1);
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(startx4, starty1);
+    ctx.lineTo(startx4, endy1);
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+  }
+}
+
+function drawConnections(pinCount, rowCount, i, j, count, op, braidLen, x, y) {
+  let nx = spacingX / 4;
+  if (!(j%2 == 1 && (i == 0 || i == count - 2) ) && j != rowCount) {
+    let startXPos = x + nx
+    let startYPos = y + spacingY - spacingY/6;
+    let endXPos = x + nx/3;
+    let endYPos = y + spacingY + spacingY/6;
+    ctx.beginPath();
+    ctx.moveTo(startXPos, startYPos);
+    ctx.lineTo(endXPos, endYPos);
+    ctx.strokeStyle = 'green';
+    ctx.stroke();
+
+    let startXPos2 = x + nx + (nx * 2 / 3);
+    let startYPos2 = y + spacingY - spacingY/6;
+    let endXPos2 = x + nx;
+    let endYPos2 = y + spacingY + spacingY/6;
+    ctx.beginPath();
+    ctx.moveTo(startXPos2, startYPos2);
+    ctx.lineTo(endXPos2, endYPos2);
+    ctx.strokeStyle = 'orange';
+    ctx.stroke();
+
+    let startXPos3 = x + nx + (nx * 4 / 3);
+    let startYPos3 = y + spacingY - spacingY/6;
+    let endXPos3 = x + nx + (nx * 6 / 3);
+    let endYPos3 = y + spacingY + spacingY/6;
+    ctx.beginPath();
+    ctx.moveTo(startXPos3, startYPos3);
+    ctx.lineTo(endXPos3, endYPos3);
+    ctx.strokeStyle = 'yellow';
+    ctx.stroke();
+
+    let startXPos4 = x + nx + (nx * 6 / 3)
+    let startYPos4 = y + spacingY - spacingY/6;
+    let endXPos4 = x + nx + (nx * 8 / 3);
+    let endYPos4 = y + spacingY + spacingY/6;
+    ctx.beginPath();
+    ctx.moveTo(startXPos4, startYPos4);
+    ctx.lineTo(endXPos4, endYPos4);
+    ctx.strokeStyle = 'blue';
+    ctx.stroke();
+
+  } else if (i == count - 2 && j != rowCount) {
+    let startXPos = x + nx
+    let startYPos = y + spacingY - spacingY/6;
+    let endXPos = x + nx - (nx * 2 / 3);
+    let endYPos = y + spacingY + spacingY/6;
+    ctx.beginPath();
+    ctx.moveTo(startXPos, startYPos);
+    ctx.lineTo(endXPos, endYPos);
+    ctx.strokeStyle = 'purple';
+    ctx.stroke();
+
+    let startXPos2 = x + nx + (nx * 2 / 3)
+    let startYPos2 = y + spacingY - spacingY/6;
+    let endXPos2 = x + nx;
+    let endYPos2 = y + spacingY + spacingY/6;
+    ctx.beginPath();
+    ctx.moveTo(startXPos2, startYPos2);
+    ctx.lineTo(endXPos2, endYPos2);
+    ctx.strokeStyle = 'brown';
+    ctx.stroke();
+
+  } else if (i == 0 && j != rowCount) {
+    let startXPos3 = x + nx + (nx * 4 / 3)
+    let startYPos3 = y + spacingY - spacingY/6;
+    let endXPos3 = x + nx + (nx * 6 / 3);
+    let endYPos3 = y + spacingY + spacingY/6;
+    ctx.beginPath();
+    ctx.moveTo(startXPos3, startYPos3);
+    ctx.lineTo(endXPos3, endYPos3);
+    ctx.strokeStyle = 'black';
+    ctx.stroke();
+
+    let startXPos4 = x + nx + (nx * 6 / 3);
+    let startYPos4 = y + spacingY - spacingY/6;
+    let endXPos4 = x + nx + (nx * 8 / 3);
+    let endYPos4 = y + spacingY + spacingY/6;
+    ctx.beginPath();
+    ctx.moveTo(startXPos4, startYPos4);
+    ctx.lineTo(endXPos4, endYPos4);
+    ctx.strokeStyle = 'pink';
+    ctx.stroke();
+  }
 }
   </script>
 </body>
