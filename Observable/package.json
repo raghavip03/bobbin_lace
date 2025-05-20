@@ -1,0 +1,14 @@
+{
+  "name": "f07a013039223c89",
+  "main": "f07a013039223c89@139.js",
+  "version": "139.0.0",
+  "homepage": "https://observablehq.com/d/f07a013039223c89",
+  "author": {
+    "name": "Sheza Alicherry",
+    "url": "https://observablehq.com/@sheza-alicherry"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
