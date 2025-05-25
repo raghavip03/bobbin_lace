@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bobbin Lace Simulator</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; }
+    canvas { border: 1px solid #000; display: block; margin: 1em auto; background: #fff; }
+    label, input { margin: 0.5em; }
+  </style>
+</head>
+<body>
+  <h1>Bobbin Lace Generator</h1>
+  <label>Number of Initial Pins: <input type="number" id="pins" min="2" step="1" value="8"></label>
+  <label>Number of Rows: <input type="number" id="rows" min="2" value="10"></label>
+  <button>Generate Lace</button>
+  <canvas id="laceCanvas" width="600" height="800"></canvas>
+  <script type="module" src="visualization.js"></script>
+</body>
+</html>
