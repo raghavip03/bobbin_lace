@@ -56,6 +56,45 @@
               let x = startX + i * spacingX + shiftX;
               let y = startY + j * spacingY;
 
+              // draw diamonds
+              if (j % 2 == 0) {
+                if (i != count - 1) {
+                  ctx.beginPath();
+                  ctx.moveTo(x, y);
+                  ctx.lineTo(x + spacingX / 2, y + spacingY);
+                  ctx.lineTo(x + spacingX, y);
+                  ctx.lineTo(x + spacingX / 2, y - spacingY);
+                  ctx.closePath();
+                  ctx.stroke();
+                }
+              } else {
+                if (i != count - 1) {
+                  ctx.beginPath();
+                  ctx.moveTo(x, y);
+                  ctx.lineTo(x - spacingX / 2, y + spacingY);
+                  ctx.lineTo(x - spacingX, y);
+                  ctx.lineTo(x - spacingX / 2, y - spacingY);
+                  ctx.closePath();
+                  ctx.stroke();
+                } else {
+                  ctx.beginPath();
+                  ctx.moveTo(x, y);
+                  ctx.lineTo(x - spacingX / 2, y + spacingY);
+                  ctx.lineTo(x - spacingX, y);
+                  ctx.lineTo(x - spacingX / 2, y - spacingY);
+                  ctx.closePath();
+                  ctx.stroke();
+                  
+                  ctx.beginPath();
+                  ctx.moveTo(x, y);
+                  ctx.lineTo(x + spacingX / 2, y + spacingY);
+                  ctx.lineTo(x + spacingX, y);
+                  ctx.lineTo(x + spacingX / 2, y - spacingY);
+                  ctx.closePath();
+                  ctx.stroke();
+                }
+              }
+
               ctx.beginPath();
               ctx.arc(x, y, 4, 0, Math.PI * 2);
               ctx.fill();
